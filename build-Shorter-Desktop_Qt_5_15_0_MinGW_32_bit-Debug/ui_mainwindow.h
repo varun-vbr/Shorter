@@ -10,12 +10,16 @@
 #define UI_MAINWINDOW_H
 
 #include <QtCore/QVariant>
+#include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QMainWindow>
+#include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QTableWidget>
+#include <QtWidgets/QToolBar>
+#include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 
 QT_BEGIN_NAMESPACE
@@ -23,18 +27,57 @@ QT_BEGIN_NAMESPACE
 class Ui_MainWindow
 {
 public:
+    QAction *actionAdd_Walls;
+    QAction *actionAdd_Start;
+    QAction *actionAdd_End;
+    QAction *actionCancel_Current_Action;
+    QAction *actionRun;
+    QAction *actionClear_grid;
     QWidget *centralwidget;
+    QVBoxLayout *verticalLayout;
     QTableWidget *tableWidget;
     QMenuBar *menubar;
+    QMenu *menuOptions;
     QStatusBar *statusbar;
+    QToolBar *toolBar;
 
     void setupUi(QMainWindow *MainWindow)
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
         MainWindow->resize(800, 600);
+        MainWindow->setDockNestingEnabled(false);
+        actionAdd_Walls = new QAction(MainWindow);
+        actionAdd_Walls->setObjectName(QString::fromUtf8("actionAdd_Walls"));
+        QIcon icon;
+        icon.addFile(QString::fromUtf8(":/icons/Wall.png"), QSize(), QIcon::Normal, QIcon::Off);
+        actionAdd_Walls->setIcon(icon);
+        actionAdd_Start = new QAction(MainWindow);
+        actionAdd_Start->setObjectName(QString::fromUtf8("actionAdd_Start"));
+        QIcon icon1;
+        icon1.addFile(QString::fromUtf8(":/icons/Start.png"), QSize(), QIcon::Normal, QIcon::Off);
+        actionAdd_Start->setIcon(icon1);
+        actionAdd_End = new QAction(MainWindow);
+        actionAdd_End->setObjectName(QString::fromUtf8("actionAdd_End"));
+        QIcon icon2;
+        icon2.addFile(QString::fromUtf8(":/icons/End.png"), QSize(), QIcon::Normal, QIcon::Off);
+        actionAdd_End->setIcon(icon2);
+        actionCancel_Current_Action = new QAction(MainWindow);
+        actionCancel_Current_Action->setObjectName(QString::fromUtf8("actionCancel_Current_Action"));
+        QIcon icon3;
+        icon3.addFile(QString::fromUtf8(":/icons/Cancel.png"), QSize(), QIcon::Normal, QIcon::Off);
+        actionCancel_Current_Action->setIcon(icon3);
+        actionRun = new QAction(MainWindow);
+        actionRun->setObjectName(QString::fromUtf8("actionRun"));
+        QIcon icon4;
+        icon4.addFile(QString::fromUtf8(":/icons/Run.png"), QSize(), QIcon::Normal, QIcon::Off);
+        actionRun->setIcon(icon4);
+        actionClear_grid = new QAction(MainWindow);
+        actionClear_grid->setObjectName(QString::fromUtf8("actionClear_grid"));
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
+        verticalLayout = new QVBoxLayout(centralwidget);
+        verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
         tableWidget = new QTableWidget(centralwidget);
         if (tableWidget->columnCount() < 5)
             tableWidget->setColumnCount(5);
@@ -61,15 +104,35 @@ public:
         QTableWidgetItem *__qtablewidgetitem9 = new QTableWidgetItem();
         tableWidget->setVerticalHeaderItem(4, __qtablewidgetitem9);
         tableWidget->setObjectName(QString::fromUtf8("tableWidget"));
-        tableWidget->setGeometry(QRect(60, 20, 701, 271));
+
+        verticalLayout->addWidget(tableWidget);
+
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
         menubar->setGeometry(QRect(0, 0, 800, 21));
+        menuOptions = new QMenu(menubar);
+        menuOptions->setObjectName(QString::fromUtf8("menuOptions"));
         MainWindow->setMenuBar(menubar);
         statusbar = new QStatusBar(MainWindow);
         statusbar->setObjectName(QString::fromUtf8("statusbar"));
         MainWindow->setStatusBar(statusbar);
+        toolBar = new QToolBar(MainWindow);
+        toolBar->setObjectName(QString::fromUtf8("toolBar"));
+        MainWindow->addToolBar(Qt::TopToolBarArea, toolBar);
+
+        menubar->addAction(menuOptions->menuAction());
+        menuOptions->addAction(actionAdd_Walls);
+        menuOptions->addAction(actionAdd_Start);
+        menuOptions->addAction(actionAdd_End);
+        menuOptions->addAction(actionCancel_Current_Action);
+        menuOptions->addAction(actionRun);
+        menuOptions->addAction(actionClear_grid);
+        toolBar->addAction(actionAdd_Walls);
+        toolBar->addAction(actionAdd_Start);
+        toolBar->addAction(actionAdd_End);
+        toolBar->addAction(actionCancel_Current_Action);
+        toolBar->addAction(actionRun);
 
         retranslateUi(MainWindow);
 
@@ -79,6 +142,14 @@ public:
     void retranslateUi(QMainWindow *MainWindow)
     {
         MainWindow->setWindowTitle(QCoreApplication::translate("MainWindow", "MainWindow", nullptr));
+        actionAdd_Walls->setText(QCoreApplication::translate("MainWindow", "Add Walls", nullptr));
+        actionAdd_Start->setText(QCoreApplication::translate("MainWindow", "Add Start", nullptr));
+        actionAdd_End->setText(QCoreApplication::translate("MainWindow", "Add End", nullptr));
+        actionCancel_Current_Action->setText(QCoreApplication::translate("MainWindow", "Cancel Current Action", nullptr));
+        actionRun->setText(QCoreApplication::translate("MainWindow", "Run", nullptr));
+        actionClear_grid->setText(QCoreApplication::translate("MainWindow", "Clear grid", nullptr));
+        menuOptions->setTitle(QCoreApplication::translate("MainWindow", "Options", nullptr));
+        toolBar->setWindowTitle(QCoreApplication::translate("MainWindow", "toolBar", nullptr));
     } // retranslateUi
 
 };

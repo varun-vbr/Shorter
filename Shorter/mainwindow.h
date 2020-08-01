@@ -15,6 +15,19 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+private slots:
+    void on_tableWidget_cellClicked(int row, int column);
+
+    void on_actionAdd_Walls_triggered();
+
+    void on_actionAdd_Start_triggered();
+
+    void on_actionAdd_End_triggered();
+
+    void on_actionCancel_Current_Action_triggered();
+
+    void on_actionClear_grid_triggered();
+
 private:
     Ui::MainWindow *ui;
 };
