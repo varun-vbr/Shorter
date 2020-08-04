@@ -28,6 +28,8 @@ private slots:
 
     void on_actionClear_grid_triggered();
 
+    void on_actionRun_triggered();
+
 private:
     Ui::MainWindow *ui;
 };

@@ -17,7 +17,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->tableWidget->verticalHeader()->hide();
     ui->tableWidget->horizontalHeader()->setDefaultSectionSize(10);    // width
     ui->tableWidget->verticalHeader()->setDefaultSectionSize(10);      // height
-    utils::initializeTable(ui->tableWidget,29,34);
+    utils::initializeTable(ui->tableWidget,utils::ROW_SIZE,utils::COL_SIZE);
 
 
 
@@ -44,16 +44,21 @@ void MainWindow::on_tableWidget_cellClicked(int row, int column)
       }
     else if(utils::isSetStart){
        if(!node.isWall() && !node.isEnd()){
-            utils::clearPrevStartPoint(ui->tableWidget, 29,34);
+            utils::clearPrevStartPoint(ui->tableWidget, utils::ROW_SIZE,utils::COL_SIZE);
             item->setBackground(Qt::green);
             node.setStart(true);
+            utils::startRow=node.getRow();
+            utils::startCol=node.getColumn();
        }
     }
     else if(utils::isSetFinish){
         if(!node.isWall() && !node.isStart()){
-            utils::clearPrevFinishPoint(ui->tableWidget,29,34);
+            utils::clearPrevFinishPoint(ui->tableWidget,utils::ROW_SIZE,utils::COL_SIZE);
             item->setBackground(Qt::red);
             node.setEnd(true);
+            utils::finishRow=node.getRow();
+            utils::finishCol=node.getColumn();
+            qDebug()<<utils::startRow<<utils::startCol<<utils::finishRow<<utils::finishCol;
         }
     }
     else{
@@ -95,5 +100,14 @@ void MainWindow::on_actionCancel_Current_Action_triggered()
 
 void MainWindow::on_actionClear_grid_triggered()
 {
-    utils::initializeTable(ui->tableWidget, 29, 34);
+    utils::initializeTable(ui->tableWidget, utils::ROW_SIZE,utils::COL_SIZE);
+}
+
+void MainWindow::on_actionRun_triggered()
+{
+Node start= utils::getTableNode(ui->tableWidget, utils::startRow, utils::startCol);
+list<Node> visitedNodesInOrder = utils::dijkastra(ui->tableWidget, start);
+Node finish= utils::getTableNode(ui->tableWidget, utils::finishRow, utils::finishCol);
+list<Node> nodesInShortestPathOrder = utils::getNodesInShortestPathOrder(ui->tableWidget, finish);
+utils::animateDijkstra(ui->tableWidget,visitedNodesInOrder,nodesInShortestPathOrder);
 }
